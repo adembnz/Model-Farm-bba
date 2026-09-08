@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: farm_tourism
+      POSTGRES_USER: farm_user
+      POSTGRES_PASSWORD: change_me_local_only
+    ports:
+      - "5432:5432"
+    volumes:
+      - farm_pgdata:/var/lib/postgresql/data
+volumes:
+  farm_pgdata:

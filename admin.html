@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة إدارة الحجوزات | المزرعة النموذجية السياحية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="admin-shell">
+
+  <!-- =================== LOGIN SCREEN =================== -->
+  <div class="login-wrap" id="loginScreen">
+    <div class="login-card">
+      <span class="brand-mark" style="width:52px;height:52px;background:var(--color-green-700);display:inline-flex;align-items:center;justify-content:center;border-radius:50%;">
+        <svg viewBox="0 0 24 24" fill="none" width="26" height="26"><path d="M12 3C8 5 6 8 6 12c0 4 2.5 7 6 9 3.5-2 6-5 6-9 0-4-2-7-6-9Z" stroke="#F5F0E4" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 21V9" stroke="#F5F0E4" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <h1>دخول لوحة الإدارة</h1>
+      <p>المزرعة النموذجية السياحية — إدارة طلبات الحجز</p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">اسم المستخدم</label>
+          <input type="text" id="username" name="username" placeholder="" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">كلمة المرور</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <span class="login-error" id="loginError">اسم المستخدم أو كلمة المرور غير صحيحة</span>
+        <button type="submit" class="btn btn-primary btn-wide" style="margin-top:14px;">دخول</button>
+      </form>
+
+      <p class="login-note">For security, administrator credentials are not displayed on this page.</p>
+      <p style="margin-top:14px;"><a href="index.html" style="color:var(--color-green-700);font-weight:700;font-size:14px;">← العودة للموقع الرئيسي</a></p>
+    </div>
+  </div>
+
+  <!-- =================== DASHBOARD (hidden until login) =================== -->
+  <div id="dashboardScreen" style="display:none;">
+
+    <header class="admin-topbar">
+<div class="language-switcher" role="group" aria-label="Language"><button type="button" data-lang-option="ar">العربية</button><button type="button" data-lang-option="fr">FR</button><button type="button" data-lang-option="en">EN</button></div>
+      <div class="container">
+        <a href="index.html" class="brand">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3C8 5 6 8 6 12c0 4 2.5 7 6 9 3.5-2 6-5 6-9 0-4-2-7-6-9Z" stroke="#F5F0E4" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 21V9" stroke="#F5F0E4" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </span>
+          <span>لوحة إدارة الحجوزات</span>
+        </a>
+        <button class="btn btn-light btn-sm" id="logoutBtn">تسجيل الخروج</button>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="container">
+
+        <div class="admin-tabs" role="tablist" aria-label="أقسام لوحة الإدارة">
+          <button type="button" class="admin-tab is-active" id="tabBookingsBtn" data-tab="bookings" role="tab" aria-selected="true">طلبات الحجز</button>
+          <button type="button" class="admin-tab" id="tabImagesBtn" data-tab="images" role="tab" aria-selected="false">صور الموقع</button>
+        </div>
+
+        <!-- =================== BOOKINGS PANEL =================== -->
+        <div id="bookingsPanel">
+
+        <div class="admin-head">
+          <div>
+            <h2 style="margin-bottom:4px;">طلبات الحجز</h2>
+            <p style="margin:0;">عرض وإدارة طلبات الحجز الواردة من الموقع</p>
+          </div>
+        </div>
+
+        <div class="admin-stats">
+          <div class="stat-pill"><b id="statTotal">0</b><span>إجمالي الطلبات</span></div>
+          <div class="stat-pill"><b id="statNew">0</b><span>جديدة</span></div>
+          <div class="stat-pill"><b id="statConfirmed">0</b><span>مؤكدة</span></div>
+          <div class="stat-pill"><b id="statCancelled">0</b><span>ملغاة</span></div>
+        </div>
+
+        <div class="search-bar" id="searchBar">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" id="bookingSearch" placeholder="ابحث بالاسم أو رقم الهاتف..." aria-label="بحث بالاسم أو رقم الهاتف" autocomplete="off" maxlength="100">
+          <button type="button" class="clear-search-btn" id="clearSearchBtn" aria-label="مسح البحث" title="مسح البحث">×</button>
+        </div>
+        <p class="search-count" id="searchCount" style="display:none;"></p>
+
+        <div class="table-card">
+          <table class="bookings-table" id="bookingsTable">
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th>الهاتف</th>
+                <th>عدد الزوار</th>
+                <th>نوع الحجز</th>
+                <th>التاريخ</th>
+                <th>الوقت</th>
+                <th>الرسالة</th>
+                <th>الحالة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsBody">
+              <!-- rows injected by admin.js -->
+            </tbody>
+          </table>
+
+          <div class="empty-state" id="emptyState" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <p id="emptyStateText">لا توجد طلبات حجز حتى الآن.</p>
+          </div>
+        </div>
+
+        <p style="margin-top:20px;font-size:12.5px;color:var(--color-text-soft);text-align:center;">
+        </p>
+
+        </div>
+
+        <!-- =================== IMAGES PANEL =================== -->
+        <div id="imagesPanel" style="display:none;">
+
+          <div class="admin-head">
+            <div>
+              <h2 style="margin-bottom:4px;">صور الموقع</h2>
+              <p style="margin:0;">غيّر أي صورة تظهر في الموقع مباشرة من هنا، بدون الحاجة لتعديل الملفات.</p>
+            </div>
+          </div>
+
+          <p class="images-note" id="imagesNote">
+            الصور تُرفع بأمان إلى الخادم وتبقى محفوظة بعد إغلاق المتصفح.
+          </p>
+
+          <div id="imagesError" class="images-error" style="display:none;"></div>
+
+          <div id="imagesGroups"><!-- groups injected by admin.js --></div>
+
+          <div class="images-footer">
+            <button type="button" class="btn btn-light btn-sm" id="resetAllImagesBtn">إعادة كل الصور إلى الوضع الافتراضي</button>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+</div>
+
+<script src="i18n.js"></script>
+<script src="site-images.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
